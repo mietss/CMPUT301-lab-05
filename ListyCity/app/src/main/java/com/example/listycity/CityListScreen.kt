@@ -32,6 +32,7 @@ fun CityListScreen(
     cities: List<City>,
     onAddCity: (City) -> Unit,
     onUpdateCity: (City, City) -> Unit,
+    onRemoveCity: (City) -> Unit,
     modifier: Modifier = Modifier
 ) {
     var newCityName by remember { mutableStateOf("") }
@@ -108,7 +109,7 @@ fun CityListScreen(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(16.dp)
+                    .padding(8.dp)
             ) {
                 OutlinedTextField(
                     value = editedCityName,
@@ -126,10 +127,15 @@ fun CityListScreen(
                     modifier = Modifier.weight(1f)
                 )
 
-                Spacer(modifier = Modifier.width(8.dp))
 
+            }
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp)
+            ) {
                 Button(
-                    modifier = Modifier.padding(vertical = 12.dp),
+                    modifier = Modifier.padding(end = 8.dp),
                     onClick = {
                         val cityToUpdate = selectedCity
                         if (
@@ -152,6 +158,26 @@ fun CityListScreen(
                     }
                 ) {
                     Text("UPDATE CITY")
+                }
+
+                Spacer(modifier = Modifier.width(8.dp))
+
+                Button(
+                    modifier = Modifier,
+                    onClick = {
+                        val cityToRemove = selectedCity
+                        if (
+                            cityToRemove != null
+                        ) {
+                            onRemoveCity(
+                                cityToRemove
+                            )
+
+                            selectedCity = null
+                        }
+                    }
+                ) {
+                    Text("REMOVE CITY")
                 }
             }
         }
@@ -213,7 +239,8 @@ fun CityListScreenPreview() {
                 City("Calgary", "AB")
             ),
             onAddCity = {},
-            onUpdateCity = { _, _ -> }
+            onUpdateCity = { _, _ -> },
+            onRemoveCity = {}
         )
     }
 }
